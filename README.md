@@ -1,5 +1,5 @@
-<p style="text-align: center"><img src="./src/icon.svg" width="100" height="100"/></p>
-<h1 style="text-align: center">Matomo</h1>
+<p align="center"><img src="./src/icon.svg" width="100" height="100"/></p>
+<h1 align="center">Matomo</h1>
 
 This plugin adds the Matomo Widgets for reporting analytics to Craft CMS  
 *by [H2G](https://www.h2g.ch)*
