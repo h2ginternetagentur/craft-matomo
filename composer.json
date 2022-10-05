@@ -1,0 +1,39 @@
+{
+  "name": "h2g/matomo",
+  "description": "Your plugin’s package description",
+  "type": "craft-plugin",
+  "keywords": [
+    "craft",
+    "cms",
+    "craftcms",
+    "craft-plugin",
+    "widget",
+    "matomo"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "H2G",
+      "homepage": "https://www.h2g.ch/"
+    }
+  ],
+  "support": {
+    "email": "info@h2g.ch",
+    "issues": "https://github.com/developer/repo/issues?state=open",
+    "source": "https://github.com/developer/repo",
+    "docs": "https://github.com/developer/repo/blob/master/README.md"
+  },
+  "require": {
+    "craftcms/cms": "^4.2.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "h2g\\matomo\\": "src/"
+    }
+  },
+  "extra": {
+    "name": "Matomo",
+    "handle": "matomo",
+    "class": "h2g\\matomo\\Matomo"
+  }
+}

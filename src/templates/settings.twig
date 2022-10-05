@@ -1,0 +1,85 @@
+{% import '_includes/forms.twig' as forms %}
+
+{{ forms.textField({
+    label: 'Endpoint'|t('matomo'),
+    name: 'matomoUrl',
+    placeholder: 'https://demo.matomo.org/',
+    value: settings.matomoUrl,
+    required: true,
+    type: 'url',
+    errors: settings.errors.matomoUrl|default([])
+}) }}
+
+{{ forms.textField({
+    label: 'Site ID'|t('matomo'),
+    name: 'siteId',
+    value: settings.siteId,
+    required: true,
+    type: 'number',
+    min: 0,
+    errors: settings.errors.siteId|default([])
+}) }}
+
+{{ forms.passwordField({
+    label: 'Auth-Token'|t('matomo'),
+    instructions: 'Can be generated in the <a href="https://matomo.h2g.ch/index.php?module=UsersManager&action=userSecurity&period=range&date=previous30#/#authtokens">Matomo security settings</a>.',
+    name: 'authToken',
+    value: settings.authToken,
+    required: true,
+    errors: settings.errors.siteId|default([])
+}) }}
+
+{% set tabs = categories|map(category => {
+    tabId: category.id,
+    label: category.name,
+    url: '#' ~ category.id
+}) %}
+
+{% macro widgetCheckbox(widget) %}
+    {{ forms.checkboxField({
+        label: widget.name,
+        name: widget.uniqueId,
+    }) }}
+{% endmacro %}
+
+{% if groupedWidgets.result is defined %}
+    <div class="readable">
+        <blockquote class="note error">
+            <p>{{ availableWidgets.message }}</p>
+        </blockquote>
+    </div>
+{% elseif groupedWidgets|length > 0 %}
+    <h2>Selection</h2>
+    {{ include('_includes/tabs', {
+        tabs: categories|map(category => {
+            tabId: category.id,
+            label: category.name,
+            url: '#' ~ category.id
+        })
+    }) }}
+    {% for categoryId, items in groupedWidgets %}
+        <div id="{{ categoryId }}" data-id="{{ categoryId }}">
+        {% for key, item in items %}
+            {% if key is integer %}
+                {{ _self.widgetCheckbox(item) }}
+            {% else %}
+                {% for widget in item %}
+                    {{ _self.widgetCheckbox(widget) }}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        </div>
+    {% endfor %}
+
+        {% for category in availableWidgets.categories %}
+            {{ forms.checkboxGroupField(}
+                label: category.name,
+                name: category.id,
+                instructions: category.help,
+                options: availableWidgets.groupedWidgets[category.id]|map(widget => }
+                    label: widget.name,
+                    name: widget.uniqueId
+                })
+            }) }}
+        {% endfor %}
+{% endif %}

@@ -1,0 +1,21 @@
+{% import "_includes/forms" as forms %}
+
+{{ forms.selectField({
+    label: 'Widget',
+    instructions: 'Select a Matomo widget',
+    id: 'parameters',
+    name: 'parameters',
+    options: availableWidgets|map(widgetMetadata => widgetMetadata|length == 1 and
+        widgetMetadata.category is defined?
+        {
+            optgroup: widgetMetadata.category.name
+        } : {
+            value: widgetMetadata.parameters|json_encode(),
+            label: widgetMetadata.name,
+        }),
+    value: widget['parameters']
+}) }}
+
+{% if allowedWidgets is defined %}
+    
+{% endif %}

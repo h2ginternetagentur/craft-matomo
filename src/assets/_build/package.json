@@ -1,0 +1,24 @@
+{
+  "name": "hochuli",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-minify": "^3.1.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^5.1.0",
+    "node-sass": "^7.0.1",
+    "sass-loader": "^10.1.0"
+  },
+  "dependencies": {
+    "gsap": "^3.10.4",
+    "iframe-resizer": "^4.3.2",
+    "scrollmagic": "^2.0.8"
+  }
+}

@@ -1,0 +1,5 @@
+.idea
+
+src/assets/*
+!src/assets/_build
+src/assets/_build/node_modules
