@@ -10,20 +10,9 @@ use yii\db\Exception;
 
 class MatomoMetadataService extends Component
 {
-    // Private Properties
-    // =========================================================================
 
-    /**
-     * @var MatomoClient
-     */
     private MatomoClient $matomoClient;
 
-    // Constructor
-    // =========================================================================
-
-    /**
-     * @inheritdoc
-     */
     public function __construct($config = [])
     {
         parent::__construct($config);
@@ -31,12 +20,6 @@ class MatomoMetadataService extends Component
         $this->matomoClient = new MatomoClient();
     }
 
-    // Public Methods
-    // =========================================================================
-
-    /*
-     * @return mixed
-     */
     public function getWidgetsMetadata(): array
     {
         $data = $this->matomoClient->getWithParams([
@@ -44,21 +27,27 @@ class MatomoMetadataService extends Component
             'method' => 'API.getWidgetMetadata',
         ]);
 
-        if ($data == [] || array_key_exists('result', $data) && $data['result'] == 'error') return $data;
+
+        if ($data == [] || array_key_exists('result', $data) && $data['result'] == 'error') {
+            return $data;
+        }
 
         // Grouping
         $categories = [];
         $groupedWidgets = [];
         foreach ($data as $widget) {
             $categoryId = $widget['category']['id'];
-            $categoryId = is_numeric($categoryId)? "ID$categoryId" : $categoryId;
-            if (!isset($categories[$categoryId])) $categories[$categoryId] = $widget['category'];
+            $categoryId = is_numeric($categoryId) ? "ID$categoryId" : $categoryId;
+            if (!isset($categories[$categoryId])) {
+                $categories[$categoryId] = $widget['category'];
+            }
 
             if ($widget['subcategory'] != null) {
                 $subcategoryId = $widget['subcategory']['id'];
-                $subcategoryId = is_numeric($subcategoryId)? "ID$subcategoryId" : $subcategoryId;
-                if (!isset($categories[$categoryId]['subcategories'][$subcategoryId]))
+                $subcategoryId = is_numeric($subcategoryId) ? "ID$subcategoryId" : $subcategoryId;
+                if (!isset($categories[$categoryId]['subcategories'][$subcategoryId])) {
                     $categories[$categoryId]['subcategories'][$subcategoryId] = $widget['subcategory'];
+                }
 
                 $groupedWidgets[$categoryId][$subcategoryId][] = $widget;
             } else {
@@ -68,7 +57,7 @@ class MatomoMetadataService extends Component
 
         // Sorting
         uasort($categories, fn($a, $b) => $a['order'] <=> $b['order']);
-        foreach($categories as &$category) {
+        foreach ($categories as &$category) {
             if (isset($category['subcategories'])) {
                 uasort($category['subcategories'], fn($a, $b) => $a['order'] <=> $b['order']);
             }
@@ -81,7 +70,9 @@ class MatomoMetadataService extends Component
                 return $a <=> $b;
             });
             foreach ($group as $key => &$value) {
-                if (is_string($key)) uasort($value, fn($a, $b) => $a['order'] <=> $b['order']);
+                if (is_string($key)) {
+                    uasort($value, fn($a, $b) => $a['order'] <=> $b['order']);
+                }
             }
         }
 

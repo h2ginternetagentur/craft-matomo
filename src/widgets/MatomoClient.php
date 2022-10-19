@@ -5,7 +5,7 @@ namespace h2g\matomo\widgets;
 use Craft;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Psr7\Response;
+use h2g\matomo\Matomo;
 
 class MatomoClient
 {
@@ -16,10 +16,10 @@ class MatomoClient
 
     public function __construct()
     {
-        $settings = \h2g\matomo\Matomo::getInstance()->settings;
+        $settings = Matomo::getInstance()->settings;
 
         $this->defaultParams = [
-            'idSite' => $settings->siteId,
+            'idSite' => 1,
             'token_auth' => $settings->authToken,
             'format' => 'JSON',
             'language' => substr(Craft::$app->locale, 0, 2),
@@ -38,11 +38,14 @@ class MatomoClient
     public function getWithParams(array $parameters): array
     {
         try {
-            $response = $this->client->request('GET', self::MATOMO_ENDPOINT_URI, ['query' => array_merge($this->defaultParams, $parameters)]);
+            $response = $this->client->request(
+                'GET',
+                self::MATOMO_ENDPOINT_URI,
+                ['query' => array_merge($this->defaultParams, $parameters)]
+            );
             return json_decode($response->getBody()->getContents(), true);
-        } catch(GuzzleException $exception) {
-            dd($exception);
-            //TDOD log error
+        } catch (GuzzleException $exception) {
+            Craft::error(sprintf('Could not Fetch Matomo Endpoint %s', $exception->getMessage()));
             return [];
         }
     }

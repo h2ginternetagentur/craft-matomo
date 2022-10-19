@@ -29,11 +29,14 @@
     errors: settings.errors.siteId|default([])
 }) }}
 
+{#
+todo this is not working because we need to set the tokens etc first
 {% set tabs = categories|map(category => {
     tabId: category.id,
     label: category.name,
     url: '#' ~ category.id
 }) %}
+
 
 {% macro widgetCheckbox(widget) %}
     {{ forms.checkboxField({
@@ -72,14 +75,15 @@
     {% endfor %}
 
         {% for category in availableWidgets.categories %}
-            {{ forms.checkboxGroupField(}
+            {{ forms.checkboxGroupField({
                 label: category.name,
                 name: category.id,
                 instructions: category.help,
-                options: availableWidgets.groupedWidgets[category.id]|map(widget => }
+                options: availableWidgets.groupedWidgets[category.id]|map(widget => {
                     label: widget.name,
                     name: widget.uniqueId
                 })
             }) }}
         {% endfor %}
 {% endif %}
+#}

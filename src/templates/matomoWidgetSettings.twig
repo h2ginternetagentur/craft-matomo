@@ -1,5 +1,6 @@
 {% import "_includes/forms" as forms %}
 
+
 {{ forms.selectField({
     label: 'Widget',
     instructions: 'Select a Matomo widget',
@@ -10,12 +11,13 @@
         {
             optgroup: widgetMetadata.category.name
         } : {
-            value: widgetMetadata.parameters|json_encode(),
+            value: widgetMetadata.parameters,
             label: widgetMetadata.name,
         }),
     value: widget['parameters']
 }) }}
 
 {% if allowedWidgets is defined %}
-    
+
 {% endif %}
+

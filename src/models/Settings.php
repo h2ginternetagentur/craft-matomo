@@ -7,30 +7,11 @@ use h2g\matomo\Matomo;
 
 class Settings extends Model
 {
-    // Public Properties
-    // =========================================================================
 
-    /**
-     * @var string
-     */
-    public string $matomoUrl;
+    public ?string $matomoUrl = null;
+    public ?int $siteId = null;
+    public ?string $authToken = null;
 
-    /**
-     * @var int
-     */
-    public int $siteId;
-
-    /**
-     * @var string
-     */
-    public string $authToken;
-
-    // Public Methods
-    // =========================================================================
-
-    /**
-     * @inheritdoc
-     */
     public function defineRules(): array
     {
         return [
@@ -42,7 +23,8 @@ class Settings extends Model
         ];
     }
 
-    public function connectionValidator($attribute, $params) {
+    public function connectionValidator($attribute, $params)
+    {
         $data = Matomo::getInstance()->matomoMetadataService->getWidgetsMetadata();
         if ($data == [] || array_key_exists('result', $data) && $data['result'] == 'error') {
             foreach (['matomoUrl', 'siteId', 'authToken'] as $attribute) {

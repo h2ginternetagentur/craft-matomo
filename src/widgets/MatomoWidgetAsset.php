@@ -7,12 +7,7 @@ use craft\web\assets\cp\CpAsset;
 
 class MatomoWidgetAsset extends AssetBundle
 {
-    // Public Methods
-    // =========================================================================
 
-    /**
-     * @inheritDoc
-     */
     public function init()
     {
         $this->sourcePath = "@h2g/matomo/assets";

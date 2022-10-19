@@ -3,6 +3,7 @@
 namespace h2g\matomo;
 
 use Craft;
+use craft\base\Plugin;
 use craft\events\RegisterComponentTypesEvent;
 use craft\services\Dashboard;
 use h2g\matomo\models\Settings;
@@ -11,22 +12,12 @@ use h2g\matomo\widgets\MatomoClient;
 use h2g\matomo\widgets\MatomoWidget;
 use yii\base\Event;
 
-class Matomo extends \craft\base\Plugin
-{
-    // Public Properties
-    // =========================================================================
 
-    /**
-     * @var bool
-     */
+class Matomo extends Plugin
+{
+
     public bool $hasCpSettings = true;
 
-    // Public Methods
-    // =========================================================================
-
-    /**
-     * @inheritdoc
-     */
     public function init()
     {
         parent::init();
@@ -39,32 +30,24 @@ class Matomo extends \craft\base\Plugin
             Dashboard::class,
             Dashboard::EVENT_REGISTER_WIDGET_TYPES,
             function (RegisterComponentTypesEvent $event) {
-                $event->types[] = MatomoWidget::class;
+                  $event->types[] = MatomoWidget::class;
             }
         );
     }
 
-    // Protected Methods
-    // =========================================================================
 
-    /**
-     * @inheritdoc
-     */
     protected function createSettingsModel(): Settings
     {
-        return new \h2g\matomo\models\Settings();
+        return new Settings();
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function settingsHtml(): string
     {
         return Craft::$app->view->renderTemplate(
             'matomo/settings',
             [
                 'settings' => $this->getSettings(),
-                ...self::getInstance()->matomoMetadataService->getWidgetsMetadata(),
+                ...MatomoMetadataService::instance()->getWidgetsMetadata()
             ]
         );
     }
